@@ -1,0 +1,47 @@
+
+{
+  "placeholderImages": [
+    {
+      "id": "hero-bg",
+      "description": "Abstract circuit board background",
+      "imageUrl": "https://picsum.photos/seed/123/1200/600",
+      "imageHint": "circuit board"
+    },
+    {
+      "id": "microcontroller-cat",
+      "description": "Arduino and electronic components",
+      "imageUrl": "https://picsum.photos/seed/45/600/400",
+      "imageHint": "microcontroller arduino"
+    },
+    {
+      "id": "minicomputer-cat",
+      "description": "Retro computer terminal",
+      "imageUrl": "https://picsum.photos/seed/67/600/400",
+      "imageHint": "vintage computer"
+    },
+    {
+      "id": "project-arduino-weather",
+      "description": "Arduino weather station project",
+      "imageUrl": "https://picsum.photos/seed/89/600/400",
+      "imageHint": "weather station"
+    },
+    {
+      "id": "project-rpi-server",
+      "description": "Raspberry Pi server setup",
+      "imageUrl": "https://picsum.photos/seed/90/600/400",
+      "imageHint": "server rack"
+    },
+    {
+      "id": "project-ai-vision",
+      "description": "AI object detection vision",
+      "imageUrl": "https://picsum.photos/seed/101/600/400",
+      "imageHint": "artificial intelligence"
+    },
+    {
+      "id": "project-nas",
+      "description": "Network attached storage setup",
+      "imageUrl": "https://picsum.photos/seed/102/600/400",
+      "imageHint": "server storage"
+    }
+  ]
+}

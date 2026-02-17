@@ -1,0 +1,129 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /**
+     * PROJECT FORGE SECURITY RULES
+     *
+     * Core Philosophy:
+     * This ruleset implements a Public-Read/Admin-Write model. The application functions as a curated 
+     * catalog of hardware projects. All project data, hardware specifications, and component 
+     * information are globally accessible to facilitate discovery and learning.
+     *
+     * Data Structure:
+     * The database uses a flat, top-level collection architecture (/project_categories, /hardware, 
+     * /components, /projects). Relationships are maintained through denormalized foreign keys 
+     * (e.g., primaryHardwareId inside a project document) to ensure high-performance querying 
+     * and simple, independent security rules.
+     *
+     * Key Security Decisions:
+     * 1. Administrative RBAC: Authorization for write operations is managed through a dedicated 
+     *    top-level collection `/roles_admin/{userId}`. The presence of a document for a user's 
+     *    UID in this collection grants administrative privileges.
+     * 2. Public Read Access: All core content is readable by any user, including anonymous 
+     *    and unauthenticated users, to maximize the app's utility as a public resource.
+     * 3. Relational Integrity: On creation of any document, the rules enforce that the 
+     *    document's internal 'id' field matches the Firestore Document ID to ensure consistency 
+     *    between paths and data.
+     *
+     * Prototyping Mode:
+     * These rules prioritize strict authorization (who can write) while remaining flexible 
+     * regarding the internal schema of documents to allow for rapid iterative development.
+     */
+
+    // --- Helper Functions ---
+
+    /**
+     * @description Checks if the user is authenticated with any provider.
+     */
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    /**
+     * @description Determines if the authenticated user has administrative privileges.
+     * Performs a lookup in the /roles_admin collection.
+     */
+    function isAdmin() {
+      return isSignedIn() && exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid));
+    }
+
+    /**
+     * @description Validates that a write operation is performed by an admin on an existing document.
+     */
+    function isExistingAdmin() {
+      return isAdmin() && resource != null;
+    }
+
+    // --- Collection Rules ---
+
+    /**
+     * @description Management of administrative roles. Only existing admins can manage other admins.
+     * @path /roles_admin/{adminUid}
+     * @allow (get) Any signed-in user checking their own status.
+     * @deny (create) Non-admin users trying to promote themselves.
+     * @principle Restricts sensitive role management to existing authorized personnel.
+     */
+    match /roles_admin/{adminUid} {
+      allow get: if isSignedIn() && request.auth.uid == adminUid;
+      allow list: if isAdmin();
+      allow create, update, delete: if isAdmin();
+    }
+
+    /**
+     * @description High-level categories for projects (e.g., Microcontrollers).
+     * @path /project_categories/{categoryId}
+     * @allow (list) Public users browsing category sections.
+     * @deny (update) Non-admin users trying to rename categories.
+     * @principle Public consumption with administrative content control.
+     */
+    match /project_categories/{categoryId} {
+      allow get, list: if true;
+      allow create: if isAdmin() && request.resource.data.id == categoryId;
+      allow update: if isExistingAdmin() && request.resource.data.id == resource.data.id;
+      allow delete: if isExistingAdmin();
+    }
+
+    /**
+     * @description Specific hardware platforms (e.g., Arduino UNO, Raspberry Pi 4).
+     * @path /hardware/{hardwareId}
+     * @allow (get) Public users viewing hardware details.
+     * @deny (delete) Unauthorized users trying to remove hardware records.
+     * @principle Enforces path-data consistency for hardware records.
+     */
+    match /hardware/{hardwareId} {
+      allow get, list: if true;
+      allow create: if isAdmin() && request.resource.data.id == hardwareId;
+      allow update: if isExistingAdmin() && request.resource.data.id == resource.data.id;
+      allow delete: if isExistingAdmin();
+    }
+
+    /**
+     * @description Reusable electronic components used across multiple projects.
+     * @path /components/{componentId}
+     * @allow (list) Users searching for projects by component.
+     * @deny (create) Unauthenticated users trying to add components.
+     * @principle Ensures only admins can modify the global component registry.
+     */
+    match /components/{componentId} {
+      allow get, list: if true;
+      allow create: if isAdmin() && request.resource.data.id == componentId;
+      allow update: if isExistingAdmin() && request.resource.data.id == resource.data.id;
+      allow delete: if isExistingAdmin();
+    }
+
+    /**
+     * @description Central project entity containing instructions, code, and hardware links.
+     * @path /projects/{projectId}
+     * @allow (create) Admin user adding a new "Smart Home" project.
+     * @deny (update) Any user trying to change the 'id' field of a project.
+     * @principle Relational integrity through immutable ID fields and admin-only writes.
+     */
+    match /projects/{projectId} {
+      allow get, list: if true;
+      allow create: if isAdmin() && request.resource.data.id == projectId;
+      allow update: if isExistingAdmin() && request.resource.data.id == resource.data.id;
+      allow delete: if isExistingAdmin();
+    }
+  }
+}

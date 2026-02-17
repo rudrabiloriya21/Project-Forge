@@ -1,0 +1,276 @@
+{
+  "entities": {
+    "ProjectCategory": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "ProjectCategory",
+      "type": "object",
+      "description": "Represents a high-level classification of projects, such as 'Microcontrollers' or 'Minicomputers'. This helps organize the main sections of the 'Project Forge' application.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the ProjectCategory entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the project category (e.g., 'Microcontrollers', 'Minicomputers')."
+        },
+        "description": {
+          "type": "string",
+          "description": "A brief description of the project category, outlining its scope and types of hardware included."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "description"
+      ]
+    },
+    "Hardware": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Hardware",
+      "type": "object",
+      "description": "Represents a specific piece of hardware (e.g., Arduino UNO, ESP32, Raspberry Pi) that projects can be built around. This entity links to the broader ProjectCategory.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Hardware entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The common name of the hardware (e.g., 'Arduino UNO', 'ESP32', 'Raspberry Pi 4')."
+        },
+        "description": {
+          "type": "string",
+          "description": "A detailed description of the hardware, including its key features, specifications, and typical applications."
+        },
+        "projectCategoryId": {
+          "type": "string",
+          "description": "Reference to the ProjectCategory this hardware belongs to (e.g., 'Microcontrollers', 'Minicomputers'). (Relationship: ProjectCategory 1:N Hardware)"
+        },
+        "manufacturer": {
+          "type": "string",
+          "description": "The manufacturer or primary developer of the hardware (e.g., 'Arduino', 'Espressif', 'Raspberry Pi Foundation')."
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "URL to a representative image of the hardware, used for display in listings and detail pages.",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "description",
+        "projectCategoryId"
+      ]
+    },
+    "Component": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Component",
+      "type": "object",
+      "description": "Represents a reusable electronic or mechanical component that can be used in various projects. This helps in listing required parts and filtering.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Component entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The common name of the component (e.g., 'LED (Red)', 'Resistor 220 Ohm', 'Breadboard Half-Size')."
+        },
+        "description": {
+          "type": "string",
+          "description": "A description of the component, including its specifications, pinout, and common uses."
+        },
+        "type": {
+          "type": "string",
+          "description": "The general type or category of the component (e.g., 'Sensor', 'Actuator', 'Passive', 'Development Board Accessory', 'Display')."
+        },
+        "datasheetUrl": {
+          "type": "string",
+          "description": "URL to the component's official datasheet or documentation for technical details.",
+          "format": "uri"
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "URL to an image representing the component, for visual identification.",
+          "format": "uri"
+        },
+        "projectIds": {
+          "type": "array",
+          "description": "References to Projects that utilize this component. (Relationship: Project N:N Component)",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "description",
+        "type"
+      ]
+    },
+    "Project": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Project",
+      "type": "object",
+      "description": "Represents an individual microcontroller or minicomputer project, containing all necessary details for users to build and understand it. This is the central entity for the 'Project Forge' application.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Project entity."
+        },
+        "title": {
+          "type": "string",
+          "description": "The concise and descriptive title of the project."
+        },
+        "shortDescription": {
+          "type": "string",
+          "description": "A brief summary of the project's purpose and functionality, suitable for project listings."
+        },
+        "fullDescription": {
+          "type": "string",
+          "description": "A comprehensive description of the project, detailing its background, objectives, and high-level functionality. This can be formatted using Markdown."
+        },
+        "difficultyLevel": {
+          "type": "string",
+          "description": "The estimated difficulty level of the project, useful for filtering and AI suggestions (e.g., 'Beginner', 'Intermediate', 'Advanced')."
+        },
+        "primaryHardwareId": {
+          "type": "string",
+          "description": "Reference to the main Hardware platform that this project is built upon. (Relationship: Hardware 1:N Project)"
+        },
+        "componentIds": {
+          "type": "array",
+          "description": "References to Components required for this project. This enables detailed component lists. (Relationship: Project N:N Component)",
+          "items": {
+            "type": "string"
+          }
+        },
+        "exampleCode": {
+          "type": "string",
+          "description": "The complete source code or crucial code snippets required for the project, typically provided as a code block or link to a repository. This can be formatted using Markdown."
+        },
+        "stepByStepInstructions": {
+          "type": "string",
+          "description": "Detailed, step-by-step instructions on how to build, wire, program, and operate the project. This can be formatted using Markdown."
+        },
+        "estimatedTimeHours": {
+          "type": "number",
+          "description": "An approximate duration in hours required for a user to complete the project from start to finish. Useful for AI project suggestions."
+        },
+        "tags": {
+          "type": "array",
+          "description": "Keywords or tags associated with the project for search and filtering purposes (e.g., 'IoT', 'robotics', 'sensor', 'automation').",
+          "items": {
+            "type": "string"
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp indicating when the project record was first created.",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Timestamp indicating when the project record was last updated.",
+          "format": "date-time"
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "URL to a primary image or thumbnail representing the completed project, for display in listings and detail pages.",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "shortDescription",
+        "fullDescription",
+        "difficultyLevel",
+        "primaryHardwareId",
+        "componentIds",
+        "exampleCode",
+        "stepByStepInstructions",
+        "createdAt",
+        "updatedAt"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/project_categories/{projectCategoryId}",
+        "definition": {
+          "entityName": "ProjectCategory",
+          "schema": {
+            "$ref": "#/backend/entities/ProjectCategory"
+          },
+          "description": "Top-level collection for organizing project categories (e.g., 'Microcontrollers', 'Minicomputers'). All documents are publicly readable. Write access is restricted to administrators.",
+          "params": [
+            {
+              "name": "projectCategoryId",
+              "description": "Unique identifier for a ProjectCategory."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/hardware/{hardwareId}",
+        "definition": {
+          "entityName": "Hardware",
+          "schema": {
+            "$ref": "#/backend/entities/Hardware"
+          },
+          "description": "Top-level collection for specific hardware items (e.g., Arduino UNO, ESP32). Includes 'projectCategoryId' for data linking and filtering. All documents are publicly readable. Write access is restricted to administrators.",
+          "params": [
+            {
+              "name": "hardwareId",
+              "description": "Unique identifier for a Hardware item."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/components/{componentId}",
+        "definition": {
+          "entityName": "Component",
+          "schema": {
+            "$ref": "#/backend/entities/Component"
+          },
+          "description": "Top-level collection for reusable electronic or mechanical components. Includes denormalized 'projectIds' array for efficient lookups of projects using this component. All documents are publicly readable. Write access is restricted to administrators.",
+          "params": [
+            {
+              "name": "componentId",
+              "description": "Unique identifier for a Component."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/projects/{projectId}",
+        "definition": {
+          "entityName": "Project",
+          "schema": {
+            "$ref": "#/backend/entities/Project"
+          },
+          "description": "Top-level collection for individual projects. Includes 'primaryHardwareId' and 'componentIds' for data linking and filtering, facilitating query access patterns without hierarchical dependencies. All documents are publicly readable. Write access is restricted to administrators.",
+          "params": [
+            {
+              "name": "projectId",
+              "description": "Unique identifier for a Project."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "This Firestore structure is designed to support the 'Project Forge' application with a strong emphasis on public readability, efficient querying, and simplified administrative write access. \n\n**Authorization Independence:** All primary content collections (`project_categories`, `hardware`, `projects`, `components`) are designed for public read access. Write operations for these collections will be restricted to designated administrators. The administrative role itself is made authorization-independent by storing it in a dedicated top-level collection, `/roles_admin/{adminUid}` (not explicitly listed in `firestorePaths` as it's a security construct rather than a core data entity from the provided schemas). This avoids any `get()` calls in security rules to check for administrative privileges from a hierarchical parent or a single configuration document, thereby maintaining atomicity and debuggability. A simple `exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid))` check suffices for administrative authorization.\n\n**Query Access Patterns (QAPs):**\n1.  **Project Categories (`/project_categories`):** This top-level collection allows direct listing of all available project categories, supporting the 'Start with Microcontrollers or Minicomputers' UI buttons. Rules will allow public read access for `list` and `get` operations.\n2.  **Hardware (`/hardware`):** Stored as a top-level collection. Although Hardware belongs to a ProjectCategory, placing it at the root enables efficient `list` operations for all hardware, or hardware filtered by `projectCategoryId` (e.g., `where('projectCategoryId', '==', 'microcontrollersId')`), without relying on complex rules to filter results from a subcollection based on parent attributes. This structure also supports the requirement to list projects associated with specific hardware.\n3.  **Projects (`/projects`):** This central entity is also a top-level collection. This design ensures that 'Project Listings' and 'Search and Filter' features can query all projects globally, or filter them by `primaryHardwareId`, `componentIds`, `difficultyLevel`, or `tags` using standard Firestore queries (e.g., `where('primaryHardwareId', '==', '...')`, `where('componentIds', 'array-contains', '...')`). The `primaryHardwareId` and `componentIds` fields within each Project document serve as direct data links, enabling efficient filtering for QAPs without imposing authorization dependencies.\n4.  **Components (`/components`):** A global lookup collection for reusable components. Storing it at the root allows easy listing and filtering of components. The `projectIds` array on `Component` denormalizes the many-to-many relationship, allowing efficient lookup of projects that use a specific component (e.g., `where('projectIds', 'array-contains', '...')` in the future, or primarily for UI display purposes).\n\n**Denormalization for Data Relationships:** Relationships like ProjectCategory to Hardware, Hardware to Project, and Project to Component are handled by embedding foreign keys (`projectCategoryId`, `primaryHardwareId`, `componentIds`) within the respective documents. This denormalization supports efficient filtering and avoids costly document `get()` operations in security rules, upholding Authorization Independence. The `projectIds` array in `Component` provides a denormalized reference back to Projects, supporting efficient component-to-project lookups.\n\n**Structural Segregation:** Each collection (`project_categories`, `hardware`, `projects`, `components`) maintains a homogeneous security posture. For example, all documents within `/projects` are publicly readable, simplifying security rules to `allow read: true; allow write: if request.auth.uid in /roles_admin;`."
+  }
+}
