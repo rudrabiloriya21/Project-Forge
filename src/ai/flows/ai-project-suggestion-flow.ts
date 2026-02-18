@@ -55,6 +55,11 @@ const projectSuggestionPrompt = ai.definePrompt({
   name: 'projectSuggestionPrompt',
   input: {schema: AiProjectSuggestionInputSchema},
   output: {schema: AiProjectSuggestionOutputSchema},
+  config: {
+    safetySettings: [
+      { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_ONLY_HIGH' }
+    ]
+  },
   prompt: `You are the Chief Technology Officer and Master Embedded Systems Architect.
 Your task is to take a user's vague idea and turn it into a professional-grade engineering proposal.
 
@@ -72,8 +77,9 @@ Your task is to take a user's vague idea and turn it into a professional-grade e
 3. **Software Stack:** Mention specific C++/Python libraries (e.g. 'FastLED', 'TensorFlow Lite', 'PubSubClient').
 4. **Circuit Logic:** Describe the wiring logic (e.g. 'Connect the sensor to I2C pins with 4.7k pull-up resistors').
 5. **Anti-Fragility:** List 3 potential pitfalls (e.g. 'Voltage spikes on inductive loads', 'Memory leaks in long-running tasks').
+6. **Impossible Requests:** If the request is scientifically impossible, architect the closest feasible high-tech prototype or "Proof of Concept".
 
-Do not just suggest an idea. Architect a solution.`,
+Do not just suggest an idea. Architect a complete technical solution.`,
 });
 
 const aiProjectSuggestionFlow = ai.defineFlow(

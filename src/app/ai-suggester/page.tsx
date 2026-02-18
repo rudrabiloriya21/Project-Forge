@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue, SelectLabel } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Sparkles, Loader2, Wrench, ListChecks, BrainCircuit, Lightbulb, Clock, Cpu, Server, GraduationCap, Zap, Target, ShieldAlert, Code2, Coins, Microscope } from 'lucide-react';
+import { Sparkles, Loader2, Wrench, ListChecks, BrainCircuit, Lightbulb, Clock, Cpu, Server, GraduationCap, Zap, Target, ShieldAlert, Code2, Coins, Microscope, FileText } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { PLATFORMS } from '@/app/lib/data';
 
@@ -51,11 +51,15 @@ export default function AiSuggesterPage() {
         budget: form.budget
       });
       setSuggestion(result);
+      toast({
+        title: "Synthesis Complete",
+        description: "Your technical blueprint has been generated successfully.",
+      });
     } catch (error) {
       console.error(error);
       toast({
         title: "Architectural Failure",
-        description: "The AI was unable to synthesize a solution. Please check your constraints.",
+        description: "The AI was unable to synthesize a solution. Please check your constraints and try again.",
         variant: "destructive"
       });
     } finally {
@@ -69,9 +73,9 @@ export default function AiSuggesterPage() {
         <div className="inline-flex p-3 rounded-full bg-primary/10 border border-primary/20 mb-4">
           <Microscope className="w-8 h-8 text-primary" />
         </div>
-        <h1 className="text-4xl md:text-6xl font-headline font-bold mb-4 tracking-tighter">System Architect <span className="text-accent">v2.0</span></h1>
+        <h1 className="text-4xl md:text-6xl font-headline font-bold mb-4 tracking-tighter">System Architect <span className="text-accent">v3.0</span></h1>
         <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-          Advanced project synthesis engine. We don't just give you ideas—we engineer your entire roadmap from BOM to deployment.
+          Generative Engineering Engine. We don't just provide ideas—we architect your entire technical roadmap from bill-of-materials to firmware logic.
         </p>
       </div>
 
@@ -121,13 +125,13 @@ export default function AiSuggesterPage() {
                       <SelectItem value="any">Any Platform</SelectItem>
                       <SelectGroup>
                         <SelectLabel>Microcontrollers</SelectLabel>
-                        {PLATFORMS.microcontrollers.slice(0, 6).map(p => (
+                        {PLATFORMS.microcontrollers.slice(0, 10).map(p => (
                           <SelectItem key={p} value={p}>{p}</SelectItem>
                         ))}
                       </SelectGroup>
                       <SelectGroup>
                         <SelectLabel>Minicomputers</SelectLabel>
-                        {PLATFORMS.minicomputers.slice(0, 6).map(p => (
+                        {PLATFORMS.minicomputers.slice(0, 10).map(p => (
                           <SelectItem key={p} value={p}>{p}</SelectItem>
                         ))}
                       </SelectGroup>
@@ -136,9 +140,9 @@ export default function AiSuggesterPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="text-[10px] uppercase font-bold tracking-widest text-muted-foreground">Inventory</Label>
+                  <Label className="text-[10px] uppercase font-bold tracking-widest text-muted-foreground">Component Inventory</Label>
                   <Input 
-                    placeholder="e.g. ESP32, OLED, Servo..."
+                    placeholder="e.g. ESP32, OLED, Servo, BMP280..."
                     value={form.availableComponents}
                     onChange={(e) => setForm({ ...form, availableComponents: e.target.value })}
                   />
@@ -147,14 +151,14 @@ export default function AiSuggesterPage() {
                 <div className="space-y-2">
                   <Label className="text-[10px] uppercase font-bold tracking-widest text-muted-foreground">The Vision</Label>
                   <Textarea 
-                    placeholder="Describe your goal (e.g. 'A voice-activated robot that brings me tools')"
-                    className="min-h-[120px] bg-background/50"
+                    placeholder="Describe your goal (e.g. 'A smart greenhouse controller with MQTT data logging')"
+                    className="min-h-[140px] bg-background/50"
                     value={form.desiredOutcome}
                     onChange={(e) => setForm({ ...form, desiredOutcome: e.target.value })}
                   />
                 </div>
 
-                <Button type="submit" className="w-full h-14 gap-2 text-lg font-headline shadow-lg shadow-primary/20" disabled={loading}>
+                <Button type="submit" className="w-full h-14 gap-2 text-lg font-headline shadow-lg shadow-primary/20 bg-primary hover:bg-primary/90" disabled={loading}>
                   {loading ? (
                     <>
                       <Loader2 className="w-5 h-5 animate-spin" />
@@ -179,22 +183,24 @@ export default function AiSuggesterPage() {
               <Card className="border-accent/30 shadow-2xl overflow-hidden">
                 <CardHeader className="bg-muted/50 border-b pb-8 relative">
                   <div className="flex flex-wrap items-center gap-2 mb-4">
-                    <Badge className="bg-primary text-white">ENGINEERED PROPOSAL</Badge>
-                    <Badge variant="outline" className="capitalize">{suggestion.difficulty} Tier</Badge>
+                    <Badge className="bg-primary text-white px-3 py-1">ENGINEERED BLUEPRINT</Badge>
+                    <Badge variant="outline" className="capitalize border-primary/30 text-primary font-bold">{suggestion.difficulty} COMPLEXITY</Badge>
                     <Badge variant="secondary" className="flex items-center gap-1"><Clock className="w-3 h-3" /> {suggestion.estimatedTime}</Badge>
                     <Badge variant="secondary" className="flex items-center gap-1"><Coins className="w-3 h-3" /> {suggestion.estimatedCost}</Badge>
                   </div>
-                  <CardTitle className="text-4xl md:text-5xl font-headline text-primary mb-2">{suggestion.projectName}</CardTitle>
+                  <CardTitle className="text-4xl md:text-5xl font-headline text-primary mb-2 tracking-tighter">{suggestion.projectName}</CardTitle>
                   <div className="flex items-center gap-4 text-muted-foreground font-medium uppercase tracking-tighter text-sm">
-                    <span className="flex items-center gap-1"><Cpu className="w-4 h-4" /> {suggestion.platform}</span>
-                    <span className="flex items-center gap-1"><Server className="w-4 h-4" /> {suggestion.category}</span>
+                    <span className="flex items-center gap-1"><Cpu className="w-4 h-4 text-primary" /> {suggestion.platform}</span>
+                    <span className="flex items-center gap-1"><Server className="w-4 h-4 text-accent" /> {suggestion.category}</span>
                   </div>
                 </CardHeader>
                 
                 <CardContent className="py-8 space-y-12">
                   {/* Summary */}
                   <section>
-                    <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-3">Architectural Vision</h4>
+                    <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-3 flex items-center gap-2">
+                      <Lightbulb className="w-4 h-4 text-yellow-500" /> Architectural Vision
+                    </h4>
                     <p className="text-xl leading-relaxed text-foreground/90 font-medium">{suggestion.description}</p>
                   </section>
 
@@ -203,35 +209,35 @@ export default function AiSuggesterPage() {
                     <div className="space-y-10">
                       <section>
                         <h4 className="text-xs font-bold uppercase tracking-widest text-primary mb-4 flex items-center gap-2">
-                          <Code2 className="w-4 h-4" /> Software Stack
+                          <Code2 className="w-4 h-4" /> Recommended Software Stack
                         </h4>
                         <div className="flex flex-wrap gap-2">
                           {suggestion.softwareStack.map((lib, i) => (
-                            <Badge key={i} variant="outline" className="bg-primary/5 font-mono text-[10px]">{lib}</Badge>
+                            <Badge key={i} variant="outline" className="bg-primary/5 font-mono text-[10px] px-3 border-primary/20">{lib}</Badge>
                           ))}
                         </div>
                       </section>
 
                       <section>
                         <h4 className="text-xs font-bold uppercase tracking-widest text-accent mb-4 flex items-center gap-2">
-                          <Zap className="w-4 h-4" /> Circuit Logic
+                          <Zap className="w-4 h-4" /> Circuit & Hardware Logic
                         </h4>
-                        <p className="text-sm leading-relaxed text-muted-foreground bg-accent/5 p-4 rounded-lg border border-accent/10">
-                          {suggestion.circuitLogic}
-                        </p>
+                        <div className="text-sm leading-relaxed text-muted-foreground bg-accent/5 p-4 rounded-lg border border-accent/10 italic">
+                          "{suggestion.circuitLogic}"
+                        </div>
                       </section>
                     </div>
 
                     {/* Milestones */}
                     <section>
                       <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-4 flex items-center gap-2">
-                        <ListChecks className="w-4 h-4 text-primary" /> Technical Milestones
+                        <ListChecks className="w-4 h-4 text-primary" /> Engineering Milestones
                       </h4>
                       <ul className="space-y-4">
                         {suggestion.architectureSteps.map((step, i) => (
-                          <li key={i} className="flex gap-3 text-sm font-medium">
-                            <span className="w-6 h-6 rounded bg-primary/10 text-primary flex items-center justify-center shrink-0 text-xs font-bold">{i+1}</span>
-                            {step}
+                          <li key={i} className="flex gap-3 text-sm font-medium items-start">
+                            <span className="w-6 h-6 rounded bg-primary text-white flex items-center justify-center shrink-0 text-xs font-bold shadow-sm">{i+1}</span>
+                            <span className="pt-0.5">{step}</span>
                           </li>
                         ))}
                       </ul>
@@ -242,44 +248,60 @@ export default function AiSuggesterPage() {
                   <div className="grid md:grid-cols-2 gap-10">
                     <section className="bg-destructive/5 p-6 rounded-xl border border-destructive/10">
                       <h4 className="text-xs font-bold uppercase tracking-widest text-destructive mb-4 flex items-center gap-2">
-                        <ShieldAlert className="w-4 h-4" /> Critical Pitfalls
+                        <ShieldAlert className="w-4 h-4" /> Potential Technical Pitfalls
                       </h4>
-                      <ul className="space-y-2">
+                      <ul className="space-y-3">
                         {suggestion.pitfalls.map((risk, i) => (
                           <li key={i} className="text-sm text-destructive/80 flex gap-2">
-                            <div className="w-1 h-1 rounded-full bg-destructive mt-2 shrink-0" />
+                            <div className="w-1.5 h-1.5 rounded-full bg-destructive mt-2 shrink-0" />
                             {risk}
                           </li>
                         ))}
                       </ul>
                     </section>
 
-                    <section>
+                    <section className="bg-muted/30 p-6 rounded-xl border">
                       <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-4 flex items-center gap-2">
-                        <Wrench className="w-4 h-4 text-accent" /> Bill of Materials
+                        <Wrench className="w-4 h-4 text-accent" /> Optimized Bill of Materials
                       </h4>
                       <div className="flex flex-wrap gap-2">
                         {suggestion.requiredComponents.map((item, idx) => (
-                          <Badge key={idx} variant="secondary" className="px-3 py-1 font-medium">{item}</Badge>
+                          <Badge key={idx} variant="secondary" className="px-3 py-1 font-medium bg-white border">{item}</Badge>
                         ))}
                       </div>
                     </section>
                   </div>
 
-                  {/* Pro Tip */}
-                  <section className="bg-primary/5 border-l-4 border-primary p-6 rounded-r-xl">
-                    <h4 className="text-xs font-bold uppercase tracking-widest text-primary mb-2">Architect's Pro-Tip</h4>
-                    <p className="text-lg italic text-foreground/80 leading-relaxed">
-                      "{suggestion.proTip}"
-                    </p>
-                  </section>
+                  {/* Outcomes & Tip */}
+                  <div className="grid md:grid-cols-2 gap-10">
+                    <section>
+                      <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-4 flex items-center gap-2">
+                        <GraduationCap className="w-4 h-4 text-primary" /> Learning Outcomes
+                      </h4>
+                      <ul className="space-y-2">
+                        {suggestion.learningOutcomes.map((outcome, i) => (
+                          <li key={i} className="text-sm text-muted-foreground flex items-center gap-2">
+                            <div className="w-1 h-1 rounded-full bg-primary shrink-0" />
+                            {outcome}
+                          </li>
+                        ))}
+                      </ul>
+                    </section>
+
+                    <section className="bg-primary/5 border-l-4 border-primary p-6 rounded-r-xl">
+                      <h4 className="text-xs font-bold uppercase tracking-widest text-primary mb-2">Architect's Secret</h4>
+                      <p className="text-lg italic text-foreground/80 leading-relaxed">
+                        "{suggestion.proTip}"
+                      </p>
+                    </section>
+                  </div>
                 </CardContent>
                 
                 <CardFooter className="bg-muted/30 border-t py-6 flex flex-col sm:flex-row gap-4">
                   <Button variant="outline" className="flex-1 h-12 gap-2 border-primary/20" onClick={() => window.print()}>
-                    Export Technical PDF
+                    <FileText className="w-4 h-4" /> Export Technical PDF
                   </Button>
-                  <Button className="flex-1 h-12 gap-2" onClick={() => setSuggestion(null)}>
+                  <Button className="flex-1 h-12 gap-2 bg-primary hover:bg-primary/90" onClick={() => setSuggestion(null)}>
                     Draft New System
                   </Button>
                 </CardFooter>
@@ -287,18 +309,18 @@ export default function AiSuggesterPage() {
             </div>
           ) : (
             <div className="h-full min-h-[600px] border-2 border-dashed rounded-3xl flex flex-col items-center justify-center text-center p-12 bg-muted/10 border-primary/10 transition-all hover:bg-muted/20">
-              <div className="w-24 h-24 rounded-2xl bg-muted flex items-center justify-center mb-8 rotate-12 transition-transform hover:rotate-0 shadow-inner">
-                <BrainCircuit className="w-12 h-12 text-primary/40" />
+              <div className="w-24 h-24 rounded-2xl bg-primary/10 flex items-center justify-center mb-8 rotate-12 transition-transform hover:rotate-0 shadow-inner">
+                <BrainCircuit className="w-12 h-12 text-primary" />
               </div>
-              <h3 className="text-3xl font-headline text-muted-foreground mb-4">Awaiting Directives</h3>
+              <h3 className="text-3xl font-headline text-muted-foreground mb-4 tracking-tighter">Awaiting Design Parameters</h3>
               <p className="text-muted-foreground max-w-md mx-auto mb-10 text-lg">
-                Input your component telemetry and hardware vision on the left. The Architect will generate a comprehensive project blueprint.
+                Input your component telemetry and hardware vision. Our architect will synthesize a complete technical roadmap for your project.
               </p>
               <div className="grid grid-cols-3 gap-6 w-full max-w-lg">
                 {[
                   { icon: Cpu, label: "Firmware" },
-                  { icon: Code2, label: "Software" },
-                  { icon: Zap, label: "Circuitry" }
+                  { icon: Code2, label: "Libraries" },
+                  { icon: Zap, label: "Circuits" }
                 ].map((item, i) => (
                   <div key={i} className="p-6 rounded-2xl bg-card border shadow-sm space-y-3">
                     <item.icon className="w-6 h-6 text-primary mx-auto" />
