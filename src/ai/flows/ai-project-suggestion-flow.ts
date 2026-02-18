@@ -1,10 +1,7 @@
 'use server';
 /**
- * @fileOverview An enhanced AI agent that engineers detailed project proposals for makers.
- *
- * - aiProjectSuggestion - A function that handles the project engineering process.
- * - AiProjectSuggestionInput - The input type for the aiProjectSuggestion function.
- * - AiProjectSuggestionOutput - The return type for the aiProjectSuggestion function.
+ * @fileOverview God-tier AI Project Engineer.
+ * Acts as a Chief Systems Architect to design comprehensive hardware roadmaps.
  */
 
 import {ai} from '@/ai/genkit';
@@ -13,49 +10,44 @@ import {z} from 'genkit';
 const AiProjectSuggestionInputSchema = z.object({
   skillLevel: z
     .enum(['beginner', 'intermediate', 'advanced'])
-    .describe("The user's experience level with electronics and programming."),
+    .describe("The user's experience level."),
   availableComponents: z
     .array(z.string())
-    .describe('A list of components the user already has.'),
+    .describe('Components the user already has.'),
   desiredOutcome: z
     .string()
-    .describe('What the user wants to achieve or build.'),
+    .describe('The user\'s dream project or goal.'),
   preferredPlatform: z
     .string()
     .optional()
-    .describe('Specific hardware the user prefers to use (e.g., ESP32, Raspberry Pi).'),
+    .describe('Specific board preference.'),
   projectGoal: z
-    .enum(['fun', 'productivity', 'learning', 'industrial'])
+    .enum(['fun', 'productivity', 'learning', 'industrial', 'artistic'])
     .optional()
-    .describe('The primary motivation for the project.'),
+    .describe('The primary motivation.'),
+  budget: z.enum(['ultra-low', 'modest', 'professional']).optional().describe('Financial constraints.'),
 });
-export type AiProjectSuggestionInput = z.infer<
-  typeof AiProjectSuggestionInputSchema
->;
+export type AiProjectSuggestionInput = z.infer<typeof AiProjectSuggestionInputSchema>;
 
 const AiProjectSuggestionOutputSchema = z.object({
-  projectName: z.string().describe('A catchy name for the project.'),
-  description: z.string().describe('A detailed summary of the project concept.'),
-  difficulty: z.enum(['easy', 'medium', 'hard']).describe('Complexity rating.'),
-  category: z.enum(['Microcontroller', 'Minicomputer']).describe('Hardware type.'),
-  platform: z.string().describe('The specific board recommended.'),
-  requiredComponents: z.array(z.string()).describe('List of necessary hardware.'),
-  estimatedTime: z.string().describe('Estimated duration to complete (e.g., "4-6 hours").'),
-  architectureSteps: z
-    .array(z.string())
-    .describe('High-level technical steps or architectural milestones.'),
-  learningOutcomes: z
-    .array(z.string())
-    .describe('Key concepts or skills the user will acquire.'),
-  proTip: z.string().describe('An expert-level insight or optimization for the project.'),
+  projectName: z.string().describe('Catchy engineering name.'),
+  description: z.string().describe('High-level vision.'),
+  difficulty: z.enum(['easy', 'medium', 'hard']).describe('Complexity.'),
+  category: z.enum(['Microcontroller', 'Minicomputer']).describe('Hardware tier.'),
+  platform: z.string().describe('Recommended primary board.'),
+  requiredComponents: z.array(z.string()).describe('BOM (Bill of Materials).'),
+  estimatedTime: z.string().describe('Time to build.'),
+  estimatedCost: z.string().describe('Estimated additional spend needed.'),
+  architectureSteps: z.array(z.string()).describe('Technical milestones.'),
+  softwareStack: z.array(z.string()).describe('Recommended libraries and protocols (e.g. WiFiManager, MQTT, OpenCV).'),
+  circuitLogic: z.string().describe('A descriptive hint of how the circuit should be wired.'),
+  learningOutcomes: z.array(z.string()).describe('Skills acquired.'),
+  pitfalls: z.array(z.string()).describe('Common mistakes to avoid for this specific build.'),
+  proTip: z.string().describe('Expert optimization.'),
 });
-export type AiProjectSuggestionOutput = z.infer<
-  typeof AiProjectSuggestionOutputSchema
->;
+export type AiProjectSuggestionOutput = z.infer<typeof AiProjectSuggestionOutputSchema>;
 
-export async function aiProjectSuggestion(
-  input: AiProjectSuggestionInput
-): Promise<AiProjectSuggestionOutput> {
+export async function aiProjectSuggestion(input: AiProjectSuggestionInput): Promise<AiProjectSuggestionOutput> {
   return aiProjectSuggestionFlow(input);
 }
 
@@ -63,24 +55,25 @@ const projectSuggestionPrompt = ai.definePrompt({
   name: 'projectSuggestionPrompt',
   input: {schema: AiProjectSuggestionInputSchema},
   output: {schema: AiProjectSuggestionOutputSchema},
-  prompt: `You are an elite Embedded Systems Architect and Linux Sysadmin. 
-Your goal is to engineer a highly feasible, creative, and rewarding hardware project for a maker.
+  prompt: `You are the Chief Technology Officer and Master Embedded Systems Architect.
+Your task is to take a user's vague idea and turn it into a professional-grade engineering proposal.
 
-### INPUT CONSTRAINTS:
-- **Skill Level:** {{{skillLevel}}}
-- **Has on hand:** {{{availableComponents}}}
-- **Wants to build:** {{{desiredOutcome}}}
-{{#if preferredPlatform}} - **Prefers Platform:** {{{preferredPlatform}}}{{/if}}
-{{#if projectGoal}} - **Primary Goal:** {{{projectGoal}}}{{/if}}
+### INPUT DATA:
+- **Level:** {{{skillLevel}}}
+- **Inventory:** {{{availableComponents}}}
+- **Dream:** {{{desiredOutcome}}}
+{{#if preferredPlatform}} - **Target Platform:** {{{preferredPlatform}}}{{/if}}
+{{#if projectGoal}} - **Focus:** {{{projectGoal}}}{{/if}}
+{{#if budget}} - **Budget Tier:** {{{budget}}}{{/if}}
 
-### YOUR TASK:
-1. Suggest a project that maximizes the use of available components.
-2. If it requires an SBC (like Raspberry Pi), classify as "Minicomputer". If it's real-time/bare-metal (like ESP32/Arduino), classify as "Microcontroller".
-3. Provide a clear "Architecture" breakdown of how the hardware and software interact.
-4. Define specific "Learning Outcomes" (e.g., "Interrupt handling", "MQTT protocol", "Linux kernel modules").
-5. Add a "Pro Tip" that addresses a common pitfall or provides a professional optimization.
+### ARCHITECTURAL REQUIREMENTS:
+1. **Feasibility:** Ensure the project is 100% buildable with the chosen hardware.
+2. **Platform Logic:** If they need real-time control, use a Microcontroller. If they need heavy processing or OS services, use a Minicomputer.
+3. **Software Stack:** Mention specific C++/Python libraries (e.g. 'FastLED', 'TensorFlow Lite', 'PubSubClient').
+4. **Circuit Logic:** Describe the wiring logic (e.g. 'Connect the sensor to I2C pins with 4.7k pull-up resistors').
+5. **Anti-Fragility:** List 3 potential pitfalls (e.g. 'Voltage spikes on inductive loads', 'Memory leaks in long-running tasks').
 
-Ensure the suggestion is technically accurate and fits the specified skill level.`,
+Do not just suggest an idea. Architect a solution.`,
 });
 
 const aiProjectSuggestionFlow = ai.defineFlow(
