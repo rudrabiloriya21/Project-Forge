@@ -2,7 +2,7 @@
 "use client";
 
 import Link from 'next/link';
-import { Cpu, Server, Home, Sparkles, Search } from 'lucide-react';
+import { Cpu, Server, Sparkles, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export function Navbar() {
@@ -13,7 +13,10 @@ export function Navbar() {
           <div className="bg-primary p-1.5 rounded-lg group-hover:bg-accent transition-colors">
             <Cpu className="w-6 h-6 text-primary-foreground group-hover:text-primary transition-colors" />
           </div>
-          <span className="font-headline text-xl font-bold">Project Forge</span>
+          <div className="flex flex-col -space-y-1">
+            <span className="font-headline text-xl font-bold">Project Forge</span>
+            <span className="text-[10px] font-medium text-muted-foreground">by Rudra Biloriya</span>
+          </div>
         </Link>
 
         <div className="hidden md:flex items-center gap-6">
@@ -34,7 +37,6 @@ export function Navbar() {
         </div>
 
         <div className="md:hidden">
-           {/* Mobile menu could go here if needed, but keeping it simple for now */}
            <Button variant="ghost" size="icon">
               <Search className="w-5 h-5" />
            </Button>
