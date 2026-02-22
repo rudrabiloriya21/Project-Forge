@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue, SelectLabel } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Sparkles, Loader2, Wrench, ListChecks, BrainCircuit, Lightbulb, Clock, Cpu, Server, GraduationCap, Zap, Target, ShieldAlert, Code2, Coins, Microscope, FileText, Terminal, Package } from 'lucide-react';
+import { Sparkles, Loader2, Wrench, ListChecks, BrainCircuit, Lightbulb, Clock, Cpu, Server, GraduationCap, Zap, Target, ShieldAlert, Code2, Coins, Microscope, FileText, Terminal, Package, ShoppingCart, ExternalLink, ShoppingBag } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { PLATFORMS } from '@/app/lib/data';
 
@@ -65,6 +65,13 @@ export default function AiSuggesterPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const getSourcingLink = (item: string, platform: 'amazon' | 'flipkart') => {
+    const query = encodeURIComponent(item);
+    return platform === 'amazon' 
+      ? `https://www.amazon.in/s?k=${query}` 
+      : `https://www.flipkart.com/search?q=${query}`;
   };
 
   return (
@@ -204,20 +211,56 @@ export default function AiSuggesterPage() {
                     <p className="text-xl leading-relaxed text-foreground/90 font-medium">{suggestion.description}</p>
                   </section>
 
-                  {/* Bill of Materials - IMPROVED UI */}
+                  {/* Bill of Materials - WITH SOURCING LINKS */}
                   <section className="bg-primary/5 p-6 rounded-xl border border-primary/20">
-                    <h4 className="text-xs font-bold uppercase tracking-widest text-primary mb-6 flex items-center gap-2">
-                      <Package className="w-4 h-4" /> Optimized Bill of Materials
-                    </h4>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    <div className="flex items-center justify-between mb-6">
+                      <h4 className="text-xs font-bold uppercase tracking-widest text-primary flex items-center gap-2">
+                        <Package className="w-4 h-4" /> Optimized Bill of Materials
+                      </h4>
+                      <div className="flex gap-2">
+                        <Badge variant="outline" className="text-[10px] bg-background">SMART SOURCING ENABLED</Badge>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                       {suggestion.requiredComponents.map((item, idx) => (
-                        <div key={idx} className="flex items-center gap-3 p-3 rounded-lg bg-background border shadow-sm hover:border-primary/50 hover:shadow-md transition-all group">
-                          <div className="w-8 h-8 rounded bg-primary/10 text-primary flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-white transition-colors">
-                            <Wrench className="w-4 h-4" />
-                          </div>
-                          <span className="text-sm font-semibold leading-tight text-foreground/80">{item}</span>
-                        </div>
+                        <Card key={idx} className="bg-background border shadow-sm hover:border-primary/50 transition-all group overflow-hidden">
+                          <CardContent className="p-3 space-y-3">
+                            <div className="flex items-center gap-3">
+                              <div className="w-8 h-8 rounded bg-primary/10 text-primary flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-white transition-colors">
+                                <Wrench className="w-4 h-4" />
+                              </div>
+                              <span className="text-sm font-semibold leading-tight text-foreground/80 line-clamp-1">{item}</span>
+                            </div>
+                            <div className="flex gap-2 pt-2 border-t">
+                              <Button 
+                                variant="ghost" 
+                                size="sm" 
+                                className="h-8 flex-1 text-[10px] gap-1 px-1 hover:bg-orange-50 hover:text-orange-600 border border-transparent hover:border-orange-200"
+                                onClick={() => window.open(getSourcingLink(item, 'amazon'), '_blank')}
+                              >
+                                <ShoppingCart className="w-3 h-3" /> Amazon
+                              </Button>
+                              <Button 
+                                variant="ghost" 
+                                size="sm" 
+                                className="h-8 flex-1 text-[10px] gap-1 px-1 hover:bg-blue-50 hover:text-blue-600 border border-transparent hover:border-blue-200"
+                                onClick={() => window.open(getSourcingLink(item, 'flipkart'), '_blank')}
+                              >
+                                <ShoppingBag className="w-3 h-3" /> Flipkart
+                              </Button>
+                            </div>
+                          </CardContent>
+                        </Card>
                       ))}
+                    </div>
+                    <div className="mt-6 flex flex-col sm:flex-row items-center gap-4 p-4 rounded-lg bg-accent/5 border border-dashed border-accent/20">
+                       <div className="flex-grow">
+                          <p className="text-sm font-bold text-accent">Procure Full BOM Hub</p>
+                          <p className="text-xs text-muted-foreground">The architect has matched your components to global marketplace identifiers.</p>
+                       </div>
+                       <Button size="sm" className="bg-accent hover:bg-accent/90 gap-2" onClick={() => window.open(getSourcingLink(suggestion.requiredComponents.join(' '), 'amazon'), '_blank')}>
+                          <ExternalLink className="w-3 h-3" /> Source Entire Set
+                       </Button>
                     </div>
                   </section>
 
@@ -332,12 +375,12 @@ export default function AiSuggesterPage() {
               </div>
               <h3 className="text-3xl font-headline text-muted-foreground mb-4 tracking-tighter">Awaiting Design Parameters</h3>
               <p className="text-muted-foreground max-w-md mx-auto mb-10 text-lg">
-                Input your component telemetry and hardware vision. Our architect will synthesize a complete technical roadmap including full source code.
+                Input your component telemetry and hardware vision. Our architect will synthesize a complete technical roadmap including full source code and marketplace sourcing.
               </p>
               <div className="grid grid-cols-3 gap-6 w-full max-w-lg">
                 {[
                   { icon: Cpu, label: "Firmware" },
-                  { icon: Code2, label: "Libraries" },
+                  { icon: ShoppingCart, label: "Sourcing" },
                   { icon: Zap, label: "Circuits" }
                 ].map((item, i) => (
                   <div key={i} className="p-6 rounded-2xl bg-card border shadow-sm space-y-3">
