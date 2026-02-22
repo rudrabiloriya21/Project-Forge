@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue, SelectLabel } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Sparkles, Loader2, Wrench, ListChecks, BrainCircuit, Lightbulb, Clock, Cpu, Server, GraduationCap, Zap, Target, ShieldAlert, Code2, Coins, Microscope, FileText } from 'lucide-react';
+import { Sparkles, Loader2, Wrench, ListChecks, BrainCircuit, Lightbulb, Clock, Cpu, Server, GraduationCap, Zap, Target, ShieldAlert, Code2, Coins, Microscope, FileText, Terminal } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { PLATFORMS } from '@/app/lib/data';
 
@@ -53,7 +53,7 @@ export default function AiSuggesterPage() {
       setSuggestion(result);
       toast({
         title: "Synthesis Complete",
-        description: "Your technical blueprint has been generated successfully.",
+        description: "Your technical blueprint and source code have been generated.",
       });
     } catch (error) {
       console.error(error);
@@ -73,9 +73,9 @@ export default function AiSuggesterPage() {
         <div className="inline-flex p-3 rounded-full bg-primary/10 border border-primary/20 mb-4">
           <Microscope className="w-8 h-8 text-primary" />
         </div>
-        <h1 className="text-4xl md:text-6xl font-headline font-bold mb-4 tracking-tighter">System Architect <span className="text-accent">v3.0</span></h1>
+        <h1 className="text-4xl md:text-6xl font-headline font-bold mb-4 tracking-tighter">System Architect <span className="text-accent">v4.0</span></h1>
         <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-          Generative Engineering Engine. We don't just provide ideas—we architect your entire technical roadmap from bill-of-materials to firmware logic.
+          Generative Engineering Engine. We architect complete technical roadmaps including production-ready firmware and software logic.
         </p>
       </div>
 
@@ -204,6 +204,20 @@ export default function AiSuggesterPage() {
                     <p className="text-xl leading-relaxed text-foreground/90 font-medium">{suggestion.description}</p>
                   </section>
 
+                  {/* Code Section */}
+                  <section className="bg-slate-950 rounded-xl overflow-hidden shadow-2xl">
+                    <div className="bg-slate-900 px-4 py-2 border-b border-slate-800 flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Terminal className="w-4 h-4 text-emerald-400" />
+                        <span className="text-[10px] font-mono text-slate-400 uppercase tracking-widest">Main Source File</span>
+                      </div>
+                      <Badge variant="outline" className="text-[9px] border-slate-700 text-slate-500 font-mono">UTF-8</Badge>
+                    </div>
+                    <div className="p-6 font-mono text-sm text-emerald-50/90 leading-relaxed overflow-x-auto max-h-[500px] scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent">
+                      <pre><code>{suggestion.fullSourceCode}</code></pre>
+                    </div>
+                  </section>
+
                   <div className="grid md:grid-cols-2 gap-10">
                     {/* Software & Logic */}
                     <div className="space-y-10">
@@ -314,7 +328,7 @@ export default function AiSuggesterPage() {
               </div>
               <h3 className="text-3xl font-headline text-muted-foreground mb-4 tracking-tighter">Awaiting Design Parameters</h3>
               <p className="text-muted-foreground max-w-md mx-auto mb-10 text-lg">
-                Input your component telemetry and hardware vision. Our architect will synthesize a complete technical roadmap for your project.
+                Input your component telemetry and hardware vision. Our architect will synthesize a complete technical roadmap including full source code.
               </p>
               <div className="grid grid-cols-3 gap-6 w-full max-w-lg">
                 {[
