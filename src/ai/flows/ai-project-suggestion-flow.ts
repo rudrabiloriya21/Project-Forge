@@ -1,6 +1,7 @@
+
 'use server';
 /**
- * @fileOverview God-tier AI Project Engineer v4.0.
+ * @fileOverview God-tier AI Project Engineer v5.0.
  * Acts as a Chief Systems Architect to design comprehensive hardware roadmaps including full source code.
  */
 
@@ -61,8 +62,8 @@ const projectSuggestionPrompt = ai.definePrompt({
       { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_ONLY_HIGH' }
     ]
   },
-  prompt: `You are the Chief Technology Officer and Master Embedded Systems Architect.
-Your task is to take a user's vague idea and turn it into a professional-grade engineering proposal.
+  prompt: `You are the Chief Technology Officer and Master Embedded Systems Architect. 
+Your task is to take a user's vague idea and turn it into a professional-grade engineering proposal. 
 
 ### INPUT DATA:
 - **Level:** {{{skillLevel}}}
