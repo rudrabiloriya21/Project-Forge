@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue, SelectLabel } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Sparkles, Loader2, Wrench, ListChecks, BrainCircuit, Lightbulb, Clock, Cpu, Server, GraduationCap, Zap, Target, ShieldAlert, Code2, Coins, Microscope, FileText, Terminal } from 'lucide-react';
+import { Sparkles, Loader2, Wrench, ListChecks, BrainCircuit, Lightbulb, Clock, Cpu, Server, GraduationCap, Zap, Target, ShieldAlert, Code2, Coins, Microscope, FileText, Terminal, Package } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { PLATFORMS } from '@/app/lib/data';
 
@@ -73,7 +73,7 @@ export default function AiSuggesterPage() {
         <div className="inline-flex p-3 rounded-full bg-primary/10 border border-primary/20 mb-4">
           <Microscope className="w-8 h-8 text-primary" />
         </div>
-        <h1 className="text-4xl md:text-6xl font-headline font-bold mb-4 tracking-tighter">System Architect <span className="text-accent">v4.0</span></h1>
+        <h1 className="text-4xl md:text-6xl font-headline font-bold mb-4 tracking-tighter">System Architect <span className="text-accent">v5.0</span></h1>
         <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
           Generative Engineering Engine. We architect complete technical roadmaps including production-ready firmware and software logic.
         </p>
@@ -204,6 +204,23 @@ export default function AiSuggesterPage() {
                     <p className="text-xl leading-relaxed text-foreground/90 font-medium">{suggestion.description}</p>
                   </section>
 
+                  {/* Bill of Materials - IMPROVED UI */}
+                  <section className="bg-primary/5 p-6 rounded-xl border border-primary/20">
+                    <h4 className="text-xs font-bold uppercase tracking-widest text-primary mb-6 flex items-center gap-2">
+                      <Package className="w-4 h-4" /> Optimized Bill of Materials
+                    </h4>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                      {suggestion.requiredComponents.map((item, idx) => (
+                        <div key={idx} className="flex items-center gap-3 p-3 rounded-lg bg-background border shadow-sm hover:border-primary/50 hover:shadow-md transition-all group">
+                          <div className="w-8 h-8 rounded bg-primary/10 text-primary flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-white transition-colors">
+                            <Wrench className="w-4 h-4" />
+                          </div>
+                          <span className="text-sm font-semibold leading-tight text-foreground/80">{item}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </section>
+
                   {/* Code Section */}
                   <section className="bg-slate-950 rounded-xl overflow-hidden shadow-2xl">
                     <div className="bg-slate-900 px-4 py-2 border-b border-slate-800 flex items-center justify-between">
@@ -258,7 +275,7 @@ export default function AiSuggesterPage() {
                     </section>
                   </div>
 
-                  {/* Risks & BOM */}
+                  {/* Risks */}
                   <div className="grid md:grid-cols-2 gap-10">
                     <section className="bg-destructive/5 p-6 rounded-xl border border-destructive/10">
                       <h4 className="text-xs font-bold uppercase tracking-widest text-destructive mb-4 flex items-center gap-2">
@@ -274,41 +291,28 @@ export default function AiSuggesterPage() {
                       </ul>
                     </section>
 
-                    <section className="bg-muted/30 p-6 rounded-xl border">
-                      <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-4 flex items-center gap-2">
-                        <Wrench className="w-4 h-4 text-accent" /> Optimized Bill of Materials
-                      </h4>
-                      <div className="flex flex-wrap gap-2">
-                        {suggestion.requiredComponents.map((item, idx) => (
-                          <Badge key={idx} variant="secondary" className="px-3 py-1 font-medium bg-white border">{item}</Badge>
-                        ))}
-                      </div>
-                    </section>
-                  </div>
-
-                  {/* Outcomes & Tip */}
-                  <div className="grid md:grid-cols-2 gap-10">
-                    <section>
-                      <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-4 flex items-center gap-2">
-                        <GraduationCap className="w-4 h-4 text-primary" /> Learning Outcomes
-                      </h4>
-                      <ul className="space-y-2">
-                        {suggestion.learningOutcomes.map((outcome, i) => (
-                          <li key={i} className="text-sm text-muted-foreground flex items-center gap-2">
-                            <div className="w-1 h-1 rounded-full bg-primary shrink-0" />
-                            {outcome}
-                          </li>
-                        ))}
-                      </ul>
-                    </section>
-
-                    <section className="bg-primary/5 border-l-4 border-primary p-6 rounded-r-xl">
+                    <section className="bg-primary/5 border-l-4 border-primary p-6 rounded-r-xl h-fit">
                       <h4 className="text-xs font-bold uppercase tracking-widest text-primary mb-2">Architect's Secret</h4>
                       <p className="text-lg italic text-foreground/80 leading-relaxed">
                         "{suggestion.proTip}"
                       </p>
                     </section>
                   </div>
+
+                  {/* Outcomes */}
+                  <section>
+                    <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-4 flex items-center gap-2">
+                      <GraduationCap className="w-4 h-4 text-primary" /> Learning Outcomes
+                    </h4>
+                    <div className="grid sm:grid-cols-2 gap-3">
+                      {suggestion.learningOutcomes.map((outcome, i) => (
+                        <div key={i} className="text-sm text-muted-foreground flex items-center gap-3 p-3 bg-muted/20 rounded-lg">
+                          <div className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                          {outcome}
+                        </div>
+                      ))}
+                    </div>
+                  </section>
                 </CardContent>
                 
                 <CardFooter className="bg-muted/30 border-t py-6 flex flex-col sm:flex-row gap-4">
