@@ -1,46 +1,45 @@
-
 {
   "placeholderImages": [
     {
       "id": "hero-bg",
       "description": "Abstract circuit board background",
-      "imageUrl": "https://picsum.photos/seed/123/1200/600",
+      "imageUrl": "https://images.unsplash.com/photo-1592659762303-90081d34b277?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjaXJjdWl0JTIwYm9hcmR8ZW58MHx8fHwxNzcxNzYwNzU4fDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "circuit board"
     },
     {
       "id": "microcontroller-cat",
       "description": "Arduino and electronic components",
-      "imageUrl": "https://picsum.photos/seed/45/600/400",
+      "imageUrl": "https://images.unsplash.com/photo-1603732551658-5fabbafa84eb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxtaWNyb2NvbnRyb2xsZXIlMjBhcmR1aW5vfGVufDB8fHx8MTc3MTc4MjQ1NXww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "microcontroller arduino"
     },
     {
       "id": "minicomputer-cat",
       "description": "Retro computer terminal",
-      "imageUrl": "https://picsum.photos/seed/67/600/400",
+      "imageUrl": "https://images.unsplash.com/photo-1571846052945-f70f6b2542d3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHx2aW50YWdlJTIwY29tcHV0ZXJ8ZW58MHx8fHwxNzcxNzgyNDU1fDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "vintage computer"
     },
     {
       "id": "project-arduino-weather",
       "description": "Arduino weather station project",
-      "imageUrl": "https://picsum.photos/seed/89/600/400",
+      "imageUrl": "https://images.unsplash.com/photo-1649327935991-4d803db0014d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8d2VhdGhlciUyMHN0YXRpb258ZW58MHx8fHwxNzcxNzgyNDU1fDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "weather station"
     },
     {
       "id": "project-rpi-server",
       "description": "Raspberry Pi server setup",
-      "imageUrl": "https://picsum.photos/seed/90/600/400",
+      "imageUrl": "https://images.unsplash.com/photo-1573164713988-8665fc963095?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxzZXJ2ZXIlMjByYWNrfGVufDB8fHx8MTc3MTc4MjQ1NXww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "server rack"
     },
     {
       "id": "project-ai-vision",
       "description": "AI object detection vision",
-      "imageUrl": "https://picsum.photos/seed/101/600/400",
+      "imageUrl": "https://images.unsplash.com/photo-1694903110330-cc64b7e1d21d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxhcnRpZmljaWFsJTIwaW50ZWxsaWdlbmNlfGVufDB8fHx8MTc3MTY3MDU2OHww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "artificial intelligence"
     },
     {
       "id": "project-nas",
       "description": "Network attached storage setup",
-      "imageUrl": "https://picsum.photos/seed/102/600/400",
+      "imageUrl": "https://images.unsplash.com/photo-1762163516269-3c143e04175c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzZXJ2ZXIlMjBzdG9yYWdlfGVufDB8fHx8MTc3MTc4MjQ1NXww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "server storage"
     }
   ]
