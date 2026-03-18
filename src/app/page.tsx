@@ -24,7 +24,7 @@ export default function Home() {
               Engineer the <span className="text-accent underline decoration-4 underline-offset-8">Future</span> in Your Workshop.
             </h1>
             <p className="text-lg text-muted-foreground mb-10 max-w-lg">
-              Project Forge is the premier destination for microcontroller enthusiasts and vintage minicomputer restorers. Discover step-by-step guides, source code, and AI-powered project ideas.
+               Discover the best Arduino, Raspberry Pi and electronics projects for students and beginners. Learn step-by-step and build real-world hardware projects easily.
             </p>
             <div className="flex flex-wrap gap-4">
               <Link href="/categories">

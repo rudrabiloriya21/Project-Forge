@@ -6,7 +6,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { FirebaseClientProvider } from '@/firebase/client-provider';
 
 export const metadata: Metadata = {
-  title: 'Project Forge | Build Your Own Project',
+  title: 'Arduino & Raspberry Pi Projects for Everyone | Project Forge',
   description: 'A platform for microcontroller and minicomputer enthusiasts.',
 };
 
