@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://project-forge-pro.vercel.app/sitemap.xml
